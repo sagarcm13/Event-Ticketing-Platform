@@ -29,12 +29,13 @@ const Home = () => {
             const formattedEvents = eventsFromContract.map(event => ({
                 eventId: event.eventId,
                 eventName: event.eventName,
-                eventDate: typeof event.eventDate === 'number' ? new Date(event.eventDate * 1000).toLocaleDateString() : 'Invalid Date',
+                eventDate: new Date(Number(event.eventDate) * 1000).toLocaleDateString(),
                 totalTickets: event.totalTickets.toString(), // Convert BigInt to string
-                ticketPrice: ethers.formatUnits(event.ticketPrice, 'wei'), // Convert Wei to Ether
+                ticketPrice: ethers.formatEther(event.ticketPrice.toString()), // Convert Wei to Ether
                 eventDescription: event.eventDescription,
                 isActive: event.isActive,
                 eventCreator: event.eventCreator,
+                ticketsSold: event.ticketsSold.toString()
             }));
 
             setEvents(formattedEvents);
@@ -79,12 +80,13 @@ const Home = () => {
         navigate(`/buyTickets?eventId=${eventId}`);
     };
 
-    const EventCard = ({ eventId, eventName, eventDate, totalTickets, ticketPrice, eventDescription, isActive, eventCreator }) => {
+    const EventCard = ({ eventId, eventName, eventDate, totalTickets, ticketPrice, eventDescription, isActive, eventCreator, ticketsSold }) => {
         return (
             <div className="bg-white shadow-lg rounded-lg overflow-hidden m-4 p-6">
                 <h3 className="text-2xl font-bold mb-2">{eventName}</h3>
                 <p className="text-gray-600 mb-4">{eventDate}</p>
                 <p className="text-gray-600 mb-4">Total Tickets: {totalTickets}</p>
+                <p className="text-gray-600 mb-4">Avaliable Tickets: {totalTickets -ticketsSold}</p>
                 <p className="text-gray-600 mb-4">Ticket Price: {ticketPrice} Wei</p>
                 <button
                     className="bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-500 transition duration-300"

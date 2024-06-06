@@ -53,11 +53,11 @@ const CreateEvent = () => {
         }
 
         // Convert ticket price from Gwei to Wei
-        const ticketPriceWei = ethers.utils.parseUnits(eventDetails.ticketPrice, 'gwei');
+        const ticketPriceWei = ethers.parseUnits(eventDetails.ticketPrice, 'gwei');
 
         // Set up the provider and signer
         const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
 
         // Set up the contract
         const contractAddress = '0x752934E1B5608eE2789dF0238B71977ed72B7459'; // Replace with your contract address
